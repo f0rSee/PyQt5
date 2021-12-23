@@ -1,6 +1,10 @@
 {
     "QLabel": {
         "title": "QLabel",
-        "description": "QLabel is used for displaying text or an image. No user interaction functionality is provided.\nThe visual appearance of the label can be configured in various ways, and it can be used for specifying a focus mnemonic key for another widget."
+        "img": "src/QLabel.png"
+        },
+    "QPushButton": {
+        "title": "QPushButton",
+        "img": "src/QPushButton.png"
         }
-    }
+}
