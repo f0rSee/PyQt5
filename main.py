@@ -1,8 +1,7 @@
 import sys
-
 from extends import *
+from PyQt5.QtWidgets import QApplication, QLineEdit, QMainWindow
 
-from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QMainWindow
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -22,7 +21,6 @@ class MainWindow(QMainWindow):
 
         self.searchBtn = Button('Search', 346, 250, self)
         self.searchBtn.clicked.connect(self.connect_to)
-
 
     def connect_to(self):
         self.text = self.inputline.text()

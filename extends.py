@@ -2,8 +2,8 @@ from PyQt5 import QtGui, QtWidgets
 from PyQt5 import QtCore
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
-import requests
 from bs4 import BeautifulSoup
+import requests
 
 
 class Button(QPushButton):
@@ -25,15 +25,8 @@ class Title(QLabel):
 class GuideWidget(QWidget):
     def __init__(self, text, parent=None):
         super(GuideWidget, self).__init__(parent)
-        self.response = requests.get(f"https://doc.qt.io/qt-5/{text.lower()}.html")
-        self.soup = BeautifulSoup(self.response.text, 'html.parser')
-        self.div = self.soup.find('div', class_='descr')
-        self.ps = self.div.find_all('p')
-        self.res = []
-        for i in self.ps:
-            self.res.append(i.text)
-        self.finalString = '\n'.join(self.res)
-        self.initUI(text, self.finalString)
+        self.response = self.parser(text)
+        self.initUI(text, self.response)
 
     def initUI(self, text, final):
         self.setFixedSize(800, 600)
@@ -45,5 +38,24 @@ class GuideWidget(QWidget):
 
         self.result = QLabel(self)
         self.result.setFixedSize(780, 500)
-        self.result.move(10, 0)
+        self.result.move(10, -100)
         self.result.setText(final)
+        self.layout.addWidget(self.result)
+
+    def parser(self, text):
+        self.response = requests.get(f"https://doc.qt.io/qt-5/{text.lower()}.html")
+        self.soup = BeautifulSoup(self.response.text, 'html.parser')
+        self.div = self.soup.find('div', class_='descr')
+        self.ps = self.div.find_all('p')
+        self.res = []
+        for i in self.ps:
+            if len(i.text) >= 100:
+                a = i.text.split()
+                self.res.append(' '.join(a[:19]))
+                self.res.append(' '.join(a[20:39]))
+                self.res.append(' '.join(a[40:59]))
+                self.res.append(' '.join(a[60:]))
+                continue
+            self.res.append(i.text)
+        self.finalString = '\n'.join(self.res)
+        return self.finalString
